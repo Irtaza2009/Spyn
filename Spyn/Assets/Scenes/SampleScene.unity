@@ -809,7 +809,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -838,11 +838,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee5197e693496742a2eabccf9fd1686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startingSpin: 50
-  spinAcceleration: 500
-  spinDrag: 0.15
-  uprightForce: 15
-  uprightTorque: 10
+  launchSpin: 50
+  spinLossPerSecond: 0.8
+  collisionSpinLoss: 0.8
+  stopSpinThreshold: 0.5
+  cameraTransform: {fileID: 330585546}
+  movementAcceleration: 14
+  maxMovementSpeed: 8
+  movementDrag: 1
+  spinControlThreshold: 2
+  fullControlSpin: 20
+  movementSpinCost: 1
+  uprightSpeed: 8
+  tiltResponse: 15
+  noStabilitySpin: 3
+  fullStabilitySpin: 25
+  applyPhysicsMaterial: 1
+  slideFriction: 0.1
+  bounciness: 0.4
+  deadLinearDamping: 1.5
+  toppleSpeed: 3
+  showDebug: 1
 --- !u!1 &1894771078
 GameObject:
   m_ObjectHideFlags: 0

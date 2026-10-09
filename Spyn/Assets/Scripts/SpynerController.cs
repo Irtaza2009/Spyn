@@ -31,6 +31,11 @@ public class SpynerController : MonoBehaviour
     [SerializeField] private float slideFriction = 0.1f;
     [SerializeField] private float bounciness = 0.4f;
 
+    [Header("Combat")]
+    [SerializeField] private float knockbackForce = 3f;
+    [SerializeField] private float minimumImpactSpeed = 1f;
+    [SerializeField] private float maxImpactDamage = 15f;
+
     [Header("Death")]
     [SerializeField] private float deadLinearDamping = 3f;
     [SerializeField] private float toppleSpeed = 3f;
@@ -42,6 +47,10 @@ public class SpynerController : MonoBehaviour
     [Range(1,2)]
     public int player = 1;
 
+    [Header("Components")]
+    [SerializeField] private SpynerTip tip;
+
+
     private Rigidbody rb;
     private Vector3 movementInput;
     private float currentSpin;
@@ -50,6 +59,8 @@ public class SpynerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (tip == null)
+            tip = GetComponentInChildren<SpynerTip>();
         RefreshPhysics();
     }
 
@@ -103,9 +114,12 @@ public class SpynerController : MonoBehaviour
         float spin = Vector3.Dot(angularVelocity, up);
         Vector3 tilt = angularVelocity - up * spin;
 
-        float loss = spinLossPerSecond;
+        float tipSpinLoss = tip != null ? tip.spinLossMultiplier : 1f;
+
+        float loss = spinLossPerSecond * tipSpinLoss;
+
         if (movementInput.sqrMagnitude > 0.01f)
-            loss += movementSpinCost;
+            loss += movementSpinCost * tipSpinLoss;
 
         spin = Mathf.MoveTowards(spin, 0f, loss * dt);
         currentSpin = spin;
@@ -182,17 +196,57 @@ public class SpynerController : MonoBehaviour
         Vector3 flat = new Vector3(velocity.x, 0f, velocity.z);
         float speedAlongInput = Vector3.Dot(flat, movementInput.normalized);
 
+        float tipMovement = tip != null ? tip.movementMultiplier : 1f;
+
         if (speedAlongInput < maxMovementSpeed)
-            rb.AddForce(movementInput * movementAcceleration * control, ForceMode.Acceleration);
+            rb.AddForce(movementInput * movementAcceleration * control * tipMovement, ForceMode.Acceleration);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Rigidbody otherBody = collision.rigidbody;
-        if (otherBody == null || otherBody.GetComponent<SpynerController>() == null)
+        SpynerController opponent =
+            collision.gameObject.GetComponentInParent<SpynerController>();
+
+        if (opponent == null || opponent == this || isDead)
             return;
 
-        ApplySpinDamage(collision.relativeVelocity.magnitude * collisionSpinLoss);
+        float impactSpeed = collision.relativeVelocity.magnitude;
+
+        if (impactSpeed < minimumImpactSpeed)
+            return;
+
+        SpynerTip opponentTip = opponent.tip;
+
+        float attackMultiplier =
+            tip != null ? tip.impactMultiplier : 1f;
+
+        float resistanceMultiplier =
+            opponentTip != null ? opponentTip.resistanceMultiplier : 1f;
+
+        float damage = Mathf.Min(
+            impactSpeed * collisionSpinLoss
+            * attackMultiplier * resistanceMultiplier,
+            maxImpactDamage
+        );
+
+        opponent.ApplySpinDamage(damage);
+
+        ContactPoint contact = collision.GetContact(0);
+
+        Vector3 direction = opponent.transform.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            direction.Normalize();
+
+            float knockback = knockbackForce * attackMultiplier;
+
+            opponent.GetComponent<Rigidbody>().AddForce(
+                direction * knockback,
+                ForceMode.Impulse
+            );
+        }
     }
 
     private void Die()

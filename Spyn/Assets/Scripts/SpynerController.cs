@@ -308,4 +308,16 @@ public class SpynerController : MonoBehaviour
     public float GetSpinSpeed() => Mathf.Abs(currentSpin);
     public float GetSpinNormalized() => Mathf.Clamp01(Mathf.Abs(currentSpin) / launchSpin);
     public bool IsDead() => isDead;
+
+    public float GetAttackMultiplier()
+    {
+        return tip != null ? tip.impactMultiplier : 1f;
+    }
+
+    public float GetMovementSpeed()
+    {
+        Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
+        return new Vector3(velocity.x, 0f, velocity.z).magnitude;
+    }
+    
 }

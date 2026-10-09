@@ -38,6 +38,10 @@ public class SpynerController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool showDebug = true;
 
+    [Header("Player")]
+    [Range(1,2)]
+    public int player = 1;
+
     private Rigidbody rb;
     private Vector3 movementInput;
     private float currentSpin;
@@ -123,12 +127,45 @@ public class SpynerController : MonoBehaviour
 
     private void ReadMovementInput()
     {
-        Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+       float horizontal;
+       float vertical;
+
+       if (player == 1)
+        {
+            horizontal = 0f;
+            vertical = 0f;
+
+            if (Input.GetKey(KeyCode.W))
+                vertical = 1f;
+            if (Input.GetKey(KeyCode.S))
+                vertical = -1f;
+            if (Input.GetKey(KeyCode.A))
+                horizontal = -1f;
+            if (Input.GetKey(KeyCode.D))
+                horizontal = 1f;
+        }
+        else
+        {
+            horizontal = 0f;
+            vertical = 0f;
+
+            if (Input.GetKey(KeyCode.UpArrow))
+                vertical = 1f;
+            if (Input.GetKey(KeyCode.DownArrow))
+                vertical = -1f;
+            if (Input.GetKey(KeyCode.LeftArrow))
+                horizontal = -1f;
+            if (Input.GetKey(KeyCode.RightArrow))
+                horizontal = 1f;
+        }
+
+        Vector3 input = new Vector3(horizontal, 0f, vertical);
         input = Vector3.ClampMagnitude(input, 1f);
 
         if (cameraTransform != null)
+        {
             input = Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f) * input;
-
+        }
         movementInput = input;
     }
 

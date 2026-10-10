@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class SelectionManager : MonoBehaviour
 {
     [Header("Preview Positions")]
     [SerializeField] private Transform p1TopPreview;
@@ -12,6 +12,10 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] private Transform p2TopPreview;
     [SerializeField] private Transform p2MidPreview;
     [SerializeField] private Transform p2TipPreview;
+
+    [Header("Player Tip Materials")]
+    [SerializeField] private Material p1TipMaterial;
+    [SerializeField] private Material p2TipMaterial;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject[] tops;
@@ -76,26 +80,47 @@ public class NewMonoBehaviourScript : MonoBehaviour
     private void ShowPreview(int slot)
     {
         GameObject[] parts =
-        slot % 3 == 0 ? tops :
-        slot % 3 == 1 ? mids : tips;
+            slot % 3 == 0 ? tops :
+            slot % 3 == 1 ? mids : tips;
 
         if (parts == null || parts.Length == 0)
-        return;
+            return;
 
         if (previews[slot] == null)
-        return;
+            return;
 
-        for (int i = previews[slot].childCount -1; i >= 0; i--)
-        Destroy(previews[slot].GetChild(i).gameObject);
+        for (int i = previews[slot].childCount - 1; i >= 0; i--)
+            Destroy(previews[slot].GetChild(i).gameObject);
 
-        GameObject preview = Instantiate (parts[choices[slot]], previews[slot]);
+        GameObject preview = Instantiate(parts[choices[slot]], previews[slot]);
 
         preview.transform.localPosition = Vector3.zero;
         preview.transform.localRotation = Quaternion.identity;
         preview.transform.localScale = Vector3.one;
 
+        // Recolour Top and Tip previews, but leave Mid unchanged.
+        if (slot % 3 == 0 || slot % 3 == 2)
+        {
+            Material material = slot < 3 ? p1TipMaterial : p2TipMaterial;
+            ApplyMaterial(preview, material);
+        }
+    }
 
+    private void ApplyMaterial(GameObject part, Material material)
+    {
+        if (material == null)
+            return;
 
+        foreach (Renderer renderer in part.GetComponentsInChildren<Renderer>(true))
+        {
+            // Replace all material slots on the tip's renderers.
+            Material[] materials = renderer.sharedMaterials;
+
+            for (int i = 0; i < materials.Length; i++)
+                materials[i] = material;
+
+            renderer.sharedMaterials = materials;
+        }
     }
 
     public void StartBattle ()
@@ -112,12 +137,5 @@ public class NewMonoBehaviourScript : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(NextSceneIndex);
         
     }
-
-
-
-
-
-
-
 
 }

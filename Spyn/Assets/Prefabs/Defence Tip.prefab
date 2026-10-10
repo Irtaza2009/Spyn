@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7881792201032109283}
   - component: {fileID: 1564855527845903850}
   - component: {fileID: 2705815845302893802}
+  - component: {fileID: 4305682754365688754}
   m_Layer: 0
   m_Name: Defence Tip
   m_TagString: Untagged
@@ -114,3 +115,20 @@ CapsuleCollider:
   m_Height: 0.0024000006
   m_Direction: 1
   m_Center: {x: 0, y: -5.551115e-17, z: 0.0010500002}
+--- !u!114 &4305682754365688754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754024709448123412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99de62186f4b3247a6960292124fb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpynerTip
+  tipType: 1
+  movementMultiplier: 0.75
+  spinLossMultiplier: 1
+  impactMultiplier: 0.8
+  resistanceMultiplier: 0.65

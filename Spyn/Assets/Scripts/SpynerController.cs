@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -13,11 +14,12 @@ public class SpynerController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private float movementAcceleration = 20f;
-    [SerializeField] private float maxMovementSpeed = 8f;
-    [SerializeField] private float movementDrag = 1f;
+    [SerializeField] private float movementAcceleration = 30f;
+    [SerializeField] private float maxMovementSpeed = 7f;
+    [SerializeField] private float movementDrag = 1.5f;
     [SerializeField] private float spinControlThreshold = 3f;
     [SerializeField] private float fullControlSpin = 20f;
+    [SerializeField] private float minimumControl = 0.4f;
     [SerializeField] private float movementSpinCost = 1.5f;
 
     [Header("Stability")]
@@ -25,11 +27,12 @@ public class SpynerController : MonoBehaviour
     [SerializeField] private float tiltResponse = 15f;
     [SerializeField] private float noStabilitySpin = 3f;
     [SerializeField] private float fullStabilitySpin = 25f;
+    [SerializeField] private float minimumStability = 0.35f;
 
     [Header("Friction")]
     [SerializeField] private bool applyPhysicsMaterial = true;
-    [SerializeField] private float slideFriction = 0.1f;
-    [SerializeField] private float bounciness = 0.4f;
+    [SerializeField] private float slideFriction = 0.2f;
+    [SerializeField] private float bounciness = 0.15f;
 
     [Header("Combat")]
     [SerializeField] private float knockbackForce = 3f;
@@ -41,15 +44,14 @@ public class SpynerController : MonoBehaviour
     [SerializeField] private float toppleSpeed = 3f;
 
     [Header("Debug")]
-    [SerializeField] private bool showDebug = true;
+    [SerializeField] private bool showDebug = false;
 
     [Header("Player")]
-    [Range(1,2)]
+    [Range(1, 2)]
     public int player = 1;
 
     [Header("Components")]
     [SerializeField] private SpynerTip tip;
-
 
     private Rigidbody rb;
     private Vector3 movementInput;
@@ -59,8 +61,8 @@ public class SpynerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        if (tip == null)
-            tip = GetComponentInChildren<SpynerTip>();
+
+        RefreshTip();
         RefreshPhysics();
     }
 
@@ -83,11 +85,11 @@ public class SpynerController : MonoBehaviour
             dynamicFriction = slideFriction,
             staticFriction = slideFriction,
             bounciness = bounciness,
-            frictionCombine = PhysicsMaterialCombine.Minimum,
-            bounceCombine = PhysicsMaterialCombine.Maximum
+            frictionCombine = PhysicsMaterialCombine.Average,
+            bounceCombine = PhysicsMaterialCombine.Minimum
         };
 
-        foreach (Collider col in GetComponentsInChildren<Collider>())
+        foreach (Collider col in GetComponentsInChildren<Collider>(true))
             col.sharedMaterial = material;
     }
 
@@ -108,13 +110,17 @@ public class SpynerController : MonoBehaviour
             return;
 
         float dt = Time.fixedDeltaTime;
-        Vector3 up = transform.up;
 
+        Vector3 up = transform.up;
         Vector3 angularVelocity = rb.angularVelocity;
+
+        // Separate spin around the spinner's own axis from its wobble.
         float spin = Vector3.Dot(angularVelocity, up);
         Vector3 tilt = angularVelocity - up * spin;
 
-        float tipSpinLoss = tip != null ? tip.spinLossMultiplier : 1f;
+        float tipSpinLoss = tip != null
+            ? tip.spinLossMultiplier
+            : 1f;
 
         float loss = spinLossPerSecond * tipSpinLoss;
 
@@ -124,9 +130,28 @@ public class SpynerController : MonoBehaviour
         spin = Mathf.MoveTowards(spin, 0f, loss * dt);
         currentSpin = spin;
 
-        float stability = Mathf.InverseLerp(noStabilitySpin, fullStabilitySpin, Mathf.Abs(spin));
-        Vector3 desiredTilt = Vector3.Cross(up, Vector3.up) * uprightSpeed;
-        tilt = Vector3.Lerp(tilt, desiredTilt, 1f - Mathf.Exp(-tiltResponse * stability * dt));
+        // Keep some stability even when the spinner is losing spin.
+        float rawStability = Mathf.InverseLerp(
+            noStabilitySpin,
+            fullStabilitySpin,
+            Mathf.Abs(spin)
+        );
+
+        float stability = Mathf.Lerp(
+            minimumStability,
+            1f,
+            rawStability
+        );
+
+        // Correct tilt without unnecessarily changing spin speed.
+        Vector3 desiredTilt =
+            Vector3.Cross(up, Vector3.up) * uprightSpeed;
+
+        float correction = 1f - Mathf.Exp(
+            -tiltResponse * stability * dt
+        );
+
+        tilt = Vector3.Lerp(tilt, desiredTilt, correction);
 
         rb.angularVelocity = tilt + up * spin;
 
@@ -136,41 +161,27 @@ public class SpynerController : MonoBehaviour
             return;
         }
 
-        Move(Mathf.Abs(spin));
+        Move(Mathf.Abs(spin), dt);
     }
 
     private void ReadMovementInput()
     {
-       float horizontal;
-       float vertical;
+        float horizontal = 0f;
+        float vertical = 0f;
 
-       if (player == 1)
+        if (player == 1)
         {
-            horizontal = 0f;
-            vertical = 0f;
-
-            if (Input.GetKey(KeyCode.W))
-                vertical = 1f;
-            if (Input.GetKey(KeyCode.S))
-                vertical = -1f;
-            if (Input.GetKey(KeyCode.A))
-                horizontal = -1f;
-            if (Input.GetKey(KeyCode.D))
-                horizontal = 1f;
+            if (Input.GetKey(KeyCode.A)) horizontal -= 1f;
+            if (Input.GetKey(KeyCode.D)) horizontal += 1f;
+            if (Input.GetKey(KeyCode.S)) vertical -= 1f;
+            if (Input.GetKey(KeyCode.W)) vertical += 1f;
         }
         else
         {
-            horizontal = 0f;
-            vertical = 0f;
-
-            if (Input.GetKey(KeyCode.UpArrow))
-                vertical = 1f;
-            if (Input.GetKey(KeyCode.DownArrow))
-                vertical = -1f;
-            if (Input.GetKey(KeyCode.LeftArrow))
-                horizontal = -1f;
-            if (Input.GetKey(KeyCode.RightArrow))
-                horizontal = 1f;
+            if (Input.GetKey(KeyCode.LeftArrow)) horizontal -= 1f;
+            if (Input.GetKey(KeyCode.RightArrow)) horizontal += 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) vertical -= 1f;
+            if (Input.GetKey(KeyCode.UpArrow)) vertical += 1f;
         }
 
         Vector3 input = new Vector3(horizontal, 0f, vertical);
@@ -178,28 +189,72 @@ public class SpynerController : MonoBehaviour
 
         if (cameraTransform != null)
         {
-            input = Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f) * input;
+            input = Quaternion.Euler(
+                0f,
+                cameraTransform.eulerAngles.y,
+                0f
+            ) * input;
         }
+
         movementInput = input;
     }
 
-    private void Move(float spinSpeed)
+    private void Move(float spinSpeed, float dt)
     {
-        if (movementInput.sqrMagnitude < 0.01f)
-            return;
-
-        float control = Mathf.InverseLerp(spinControlThreshold, fullControlSpin, spinSpeed);
-        if (control <= 0f)
-            return;
-
         Vector3 velocity = rb.linearVelocity;
-        Vector3 flat = new Vector3(velocity.x, 0f, velocity.z);
-        float speedAlongInput = Vector3.Dot(flat, movementInput.normalized);
+        Vector3 flatVelocity = new Vector3(
+            velocity.x, 0f, velocity.z
+        );
 
-        float tipMovement = tip != null ? tip.movementMultiplier : 1f;
+        float control = Mathf.InverseLerp(
+            spinControlThreshold,
+            fullControlSpin,
+            spinSpeed
+        );
 
-        if (speedAlongInput < maxMovementSpeed)
-            rb.AddForce(movementInput * movementAcceleration * control * tipMovement, ForceMode.Acceleration);
+        // Steering becomes weaker as spin runs out, but never
+        // suddenly disappears while the spinner is still alive.
+        control = Mathf.Lerp(minimumControl, 1f, control);
+
+        float tipMovement = tip != null
+            ? tip.movementMultiplier
+            : 1f;
+
+        float targetSpeed = maxMovementSpeed * control * tipMovement;
+
+        Vector3 targetVelocity = movementInput * targetSpeed;
+
+        if (movementInput.sqrMagnitude > 0.01f)
+        {
+            // Steer towards the requested direction instead of
+            // continually accelerating past it.
+            Vector3 newVelocity = Vector3.MoveTowards(
+                flatVelocity,
+                targetVelocity,
+                movementAcceleration * control * dt
+            );
+
+            rb.linearVelocity = new Vector3(
+                newVelocity.x,
+                velocity.y,
+                newVelocity.z
+            );
+        }
+        else
+        {
+            // Gradually remove horizontal drift when no key is held.
+            Vector3 newVelocity = Vector3.MoveTowards(
+                flatVelocity,
+                Vector3.zero,
+                movementAcceleration * 0.35f * dt
+            );
+
+            rb.linearVelocity = new Vector3(
+                newVelocity.x,
+                velocity.y,
+                newVelocity.z
+            );
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -217,23 +272,25 @@ public class SpynerController : MonoBehaviour
 
         SpynerTip opponentTip = opponent.tip;
 
-        float attackMultiplier =
-            tip != null ? tip.impactMultiplier : 1f;
+        float attackMultiplier = tip != null
+            ? tip.impactMultiplier
+            : 1f;
 
-        float resistanceMultiplier =
-            opponentTip != null ? opponentTip.resistanceMultiplier : 1f;
+        float resistanceMultiplier = opponentTip != null
+            ? opponentTip.resistanceMultiplier
+            : 1f;
 
         float damage = Mathf.Min(
             impactSpeed * collisionSpinLoss
-            * attackMultiplier * resistanceMultiplier,
+                * attackMultiplier * resistanceMultiplier,
             maxImpactDamage
         );
 
         opponent.ApplySpinDamage(damage);
 
-        ContactPoint contact = collision.GetContact(0);
+        Vector3 direction =
+            opponent.transform.position - transform.position;
 
-        Vector3 direction = opponent.transform.position - transform.position;
         direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.001f)
@@ -242,10 +299,16 @@ public class SpynerController : MonoBehaviour
 
             float knockback = knockbackForce * attackMultiplier;
 
-            opponent.GetComponent<Rigidbody>().AddForce(
-                direction * knockback,
-                ForceMode.Impulse
-            );
+            Rigidbody opponentRb =
+                opponent.GetComponent<Rigidbody>();
+
+            if (opponentRb != null)
+            {
+                opponentRb.AddForce(
+                    direction * knockback,
+                    ForceMode.Impulse
+                );
+            }
         }
     }
 
@@ -256,11 +319,21 @@ public class SpynerController : MonoBehaviour
 
         isDead = true;
         movementInput = Vector3.zero;
+
         rb.linearDamping = deadLinearDamping;
 
-        Vector3 axis = Vector3.Cross(Vector3.up, Random.insideUnitSphere);
+        Vector3 axis = Vector3.Cross(
+            Vector3.up,
+            Random.insideUnitSphere
+        );
+
         if (axis.sqrMagnitude > 0.0001f)
-            rb.AddTorque(axis.normalized * toppleSpeed, ForceMode.VelocityChange);
+        {
+            rb.AddTorque(
+                axis.normalized * toppleSpeed,
+                ForceMode.VelocityChange
+            );
+        }
     }
 
     private void OnGUI()
@@ -268,11 +341,14 @@ public class SpynerController : MonoBehaviour
         if (!showDebug || rb == null)
             return;
 
-        GUI.Label(new Rect(10, 10, 400, 100),
-            $"spin: {currentSpin:F1} rad/s\n" +
-            $"tilt: {Vector3.Angle(transform.up, Vector3.up):F1} deg\n" +
-            $"speed: {rb.linearVelocity.magnitude:F1} m/s\n" +
-            $"dead: {isDead}");
+        GUI.Label(
+            new Rect(10, 10, 400, 100),
+            $"Player: {player}\n" +
+            $"Spin: {currentSpin:F1} rad/s\n" +
+            $"Tilt: {Vector3.Angle(transform.up, Vector3.up):F1} deg\n" +
+            $"Speed: {GetMovementSpeed():F1} m/s\n" +
+            $"Dead: {isDead}"
+        );
     }
 
     public void Launch()
@@ -292,7 +368,9 @@ public class SpynerController : MonoBehaviour
 
         Vector3 up = transform.up;
         float spin = Vector3.Dot(rb.angularVelocity, up);
+
         float newSpin = Mathf.MoveTowards(spin, 0f, amount);
+
         rb.angularVelocity += up * (newSpin - spin);
     }
 
@@ -302,11 +380,23 @@ public class SpynerController : MonoBehaviour
             return;
 
         float direction = currentSpin < 0f ? -1f : 1f;
+
         rb.angularVelocity += transform.up * direction * amount;
     }
 
-    public float GetSpinSpeed() => Mathf.Abs(currentSpin);
-    public float GetSpinNormalized() => Mathf.Clamp01(Mathf.Abs(currentSpin) / launchSpin);
+    public void RefreshTip()
+    {
+        tip = GetComponentInChildren<SpynerTip>();
+    }
+
+    public float GetSpinSpeed() =>
+        Mathf.Abs(currentSpin);
+
+    public float GetSpinNormalized() =>
+        launchSpin > 0f
+            ? Mathf.Clamp01(Mathf.Abs(currentSpin) / launchSpin)
+            : 0f;
+
     public bool IsDead() => isDead;
 
     public float GetAttackMultiplier()
@@ -316,8 +406,10 @@ public class SpynerController : MonoBehaviour
 
     public float GetMovementSpeed()
     {
-        Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
-        return new Vector3(velocity.x, 0f, velocity.z).magnitude;
+        Vector3 velocity = rb.linearVelocity;
+
+        return new Vector3(
+            velocity.x, 0f, velocity.z
+        ).magnitude;
     }
-    
 }

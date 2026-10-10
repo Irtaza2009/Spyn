@@ -7,6 +7,10 @@ public class TopPartsGenerator : MonoBehaviour
     [SerializeField, Range(1,2)]
     private int playerNumber = 1;
 
+    [Header("Player Tip Materials")]
+    [SerializeField] private Material p1TipMaterial;
+    [SerializeField] private Material p2TipMaterial;
+
     [Header("Part Objects")]
     [SerializeField] private GameObject[] tops;
     [SerializeField] private GameObject[] mids;
@@ -37,6 +41,44 @@ public class TopPartsGenerator : MonoBehaviour
         SetSelectedPart(tops, topIndex);
         SetSelectedPart(mids, midIndex);
         SetSelectedPart(tips, tipIndex);
+
+        // Apply the player's colour to the selected Top and Tip.
+        Material playerMaterial = playerNumber == 1
+            ? p1TipMaterial
+            : p2TipMaterial;
+
+        if (tops != null && topIndex >= 0 && topIndex < tops.Length)
+        {
+            if (tops[topIndex] != null)
+                ApplyMaterial(tops[topIndex], playerMaterial);
+        }
+
+        if (tips != null && tipIndex >= 0 && tipIndex < tips.Length)
+        {
+            if (tips[tipIndex] != null)
+                ApplyMaterial(tips[tipIndex], playerMaterial);
+        }
+
+        SpynerController controller = GetComponent<SpynerController>();
+
+        if (controller != null)
+            controller.RefreshTip();
+    }
+
+    private void ApplyMaterial(GameObject part, Material material)
+    {
+        if (part == null || material == null)
+            return;
+
+        foreach (Renderer renderer in part.GetComponentsInChildren<Renderer>(true))
+        {
+            Material[] materials = renderer.sharedMaterials;
+
+            for (int i = 0; i < materials.Length; i++)
+                materials[i] = material;
+
+            renderer.sharedMaterials = materials;
+        }
     }
 
     private void SetSelectedPart(GameObject[] parts, int selectedIndex)

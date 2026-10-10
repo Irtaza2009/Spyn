@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1462439139532724492}
   - component: {fileID: 1879161592606222988}
   - component: {fileID: 7772703752171566383}
+  - component: {fileID: 6336468032523012788}
   m_Layer: 0
   m_Name: Stamina Tip
   m_TagString: Untagged
@@ -114,3 +115,20 @@ CapsuleCollider:
   m_Height: 0.0024000006
   m_Direction: 1
   m_Center: {x: 0, y: -5.551115e-17, z: 0.0011000002}
+--- !u!114 &6336468032523012788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248910307281980503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99de62186f4b3247a6960292124fb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpynerTip
+  tipType: 2
+  movementMultiplier: 0.9
+  spinLossMultiplier: 0.65
+  impactMultiplier: 0.8
+  resistanceMultiplier: 1.1

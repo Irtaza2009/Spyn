@@ -430,6 +430,8 @@ MonoBehaviour:
   p2TopPreview: {fileID: 1910993284}
   p2MidPreview: {fileID: 1635659110}
   p2TipPreview: {fileID: 762131593}
+  p1TipMaterial: {fileID: 2100000, guid: bddb41974f6451247bf7c3a025931be4, type: 2}
+  p2TipMaterial: {fileID: 2100000, guid: a3ac8fcc578e7234c8aa0d1891eaa30b, type: 2}
   tops:
   - {fileID: 2382380799432113589, guid: f1211504a576a4104b56b96475f5a331, type: 3}
   - {fileID: 2009175926093817254, guid: ccae945f7d4a148d399a0496c383cc56, type: 3}

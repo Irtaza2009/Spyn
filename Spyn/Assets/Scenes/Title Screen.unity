@@ -2420,7 +2420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee5197e693496742a2eabccf9fd1686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  launchSpin: 100
+  launchSpin: 1000
   spinLossPerSecond: 0.8
   collisionSpinLoss: 0.8
   stopSpinThreshold: 0.5
@@ -3225,7 +3225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee5197e693496742a2eabccf9fd1686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  launchSpin: 100
+  launchSpin: 1000
   spinLossPerSecond: 0.8
   collisionSpinLoss: 0.8
   stopSpinThreshold: 0.5
@@ -3362,9 +3362,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.373131, g: 0.4042956, b: 0.6132076, a: 1}
-    m_PressedColor: {r: 0.23535958, g: 0.25734177, b: 0.38679248, a: 1}
-    m_SelectedColor: {r: 0.36862746, g: 0.40392157, b: 0.6117647, a: 1}
+    m_HighlightedColor: {r: 0.61185974, g: 0.61185974, b: 0.61185974, a: 1}
+    m_PressedColor: {r: 0.38544464, g: 0.38544464, b: 0.38544464, a: 1}
+    m_SelectedColor: {r: 0.6280323, g: 0.6280323, b: 0.6280323, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

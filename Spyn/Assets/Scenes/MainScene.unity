@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -826,13 +827,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 4.3, z: -7.5}
+  m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
+  m_LocalPosition: {x: 0, y: 5, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +878,19 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bff4288bcfef444d88ccfed75f13036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  shakeSpeed: 25
 --- !u!1 &341284180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2382380799432113589, guid: f1211504a576a4104b56b96475f5a331, type: 3}
@@ -1260,6 +1274,11 @@ MonoBehaviour:
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
+  impactParticles: {fileID: 3468349710246926554, guid: 4129a53e1eed24143b73380e5dc79f44, type: 3}
+  cameraShake: {fileID: 330585548}
+  shakeThreshold: 1
+  maxShakeIntensity: 0.5
+  maxShakeDuration: 0.3
   deadLinearDamping: 1.5
   toppleSpeed: 3
   showDebug: 1
@@ -4220,6 +4239,11 @@ MonoBehaviour:
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
+  impactParticles: {fileID: 3468349710246926554, guid: 4129a53e1eed24143b73380e5dc79f44, type: 3}
+  cameraShake: {fileID: 330585548}
+  shakeThreshold: 1
+  maxShakeIntensity: 0.5
+  maxShakeDuration: 0.3
   deadLinearDamping: 1.5
   toppleSpeed: 3
   showDebug: 1
@@ -4467,6 +4491,11 @@ MonoBehaviour:
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
+  impactParticles: {fileID: 0}
+  cameraShake: {fileID: 0}
+  shakeThreshold: 3
+  maxShakeIntensity: 0.18
+  maxShakeDuration: 0.12
   deadLinearDamping: 1.5
   toppleSpeed: 3
   showDebug: 1

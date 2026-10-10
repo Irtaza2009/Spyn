@@ -39,6 +39,13 @@ public class SpynerController : MonoBehaviour
     [SerializeField] private float minimumImpactSpeed = 1f;
     [SerializeField] private float maxImpactDamage = 15f;
 
+    [Header("Combat Effects")]
+    [SerializeField] private ParticleSystem impactParticles;
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private float shakeThreshold = 3f;
+    [SerializeField] private float maxShakeIntensity = 0.18f;
+    [SerializeField] private float maxShakeDuration = 0.12f;
+
     [Header("Death")]
     [SerializeField] private float deadLinearDamping = 3f;
     [SerializeField] private float toppleSpeed = 3f;
@@ -270,6 +277,13 @@ public class SpynerController : MonoBehaviour
         if (impactSpeed < minimumImpactSpeed)
             return;
 
+        ContactPoint contact = collision.GetContact(0);
+
+        if (GetEntityId() < opponent.GetEntityId())
+        {
+            PlayImpactEffects(contact.point, impactSpeed);
+        }
+
         SpynerTip opponentTip = opponent.tip;
 
         float attackMultiplier = tip != null
@@ -412,4 +426,34 @@ public class SpynerController : MonoBehaviour
             velocity.x, 0f, velocity.z
         ).magnitude;
     }
+
+    private void PlayImpactEffects(Vector3 hitPoint, float impactSpeed)
+    {                                                                   
+        if (impactParticles != null)
+        {
+            ParticleSystem particles = Instantiate(
+                impactParticles,
+                hitPoint,
+                Quaternion.identity
+            );
+
+            particles.Play();
+
+            Destroy(particles.gameObject, 2f);
+        }
+
+        if (cameraShake != null && impactSpeed >= shakeThreshold)
+        {
+            float strength = Mathf.InverseLerp(
+                shakeThreshold,
+                12f,
+                impactSpeed
+            );
+
+            cameraShake.Shake(
+                Mathf.Lerp(0.03f, maxShakeIntensity, strength),
+                Mathf.Lerp(0.04f, maxShakeDuration, strength)
+            );
+        }
+    }                               
 }

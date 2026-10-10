@@ -828,7 +828,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
-  m_LocalPosition: {x: 0, y: 5, z: -7.5}
+  m_LocalPosition: {x: 0, y: 5.1, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1253,24 +1253,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   launchSpin: 300
   spinLossPerSecond: 0.8
-  collisionSpinLoss: 0.8
+  collisionSpinLoss: 0.25
   stopSpinThreshold: 0.5
   cameraTransform: {fileID: 0}
   movementAcceleration: 14
-  maxMovementSpeed: 8
-  movementDrag: 1
-  spinControlThreshold: 2
+  maxMovementSpeed: 7
+  movementDrag: 0.3
+  spinControlThreshold: 3
   fullControlSpin: 20
   minimumControl: 0.4
   movementSpinCost: 0.5
+  extraBowlPull: 4
+  maxPlanarSpeed: 14
+  overspeedBrake: 40
+  arenaLayer:
+    serializedVersion: 2
+    m_Bits: 64
   uprightSpeed: 8
   tiltResponse: 15
   noStabilitySpin: 3
   fullStabilitySpin: 25
   minimumStability: 0.35
   applyPhysicsMaterial: 1
-  slideFriction: 0.1
-  bounciness: 0.4
+  slideFriction: 0.05
+  bounciness: 0.15
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
@@ -4218,24 +4224,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   launchSpin: 300
   spinLossPerSecond: 0.8
-  collisionSpinLoss: 0.8
+  collisionSpinLoss: 0.25
   stopSpinThreshold: 0.5
   cameraTransform: {fileID: 0}
   movementAcceleration: 14
-  maxMovementSpeed: 8
-  movementDrag: 1
-  spinControlThreshold: 2
+  maxMovementSpeed: 7
+  movementDrag: 0.3
+  spinControlThreshold: 3
   fullControlSpin: 20
   minimumControl: 0.4
   movementSpinCost: 0.5
+  extraBowlPull: 4
+  maxPlanarSpeed: 14
+  overspeedBrake: 40
+  arenaLayer:
+    serializedVersion: 2
+    m_Bits: 64
   uprightSpeed: 8
   tiltResponse: 15
   noStabilitySpin: 3
   fullStabilitySpin: 25
   minimumStability: 0.35
   applyPhysicsMaterial: 1
-  slideFriction: 0.1
-  bounciness: 0.4
+  slideFriction: 0.05
+  bounciness: 0.15
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
@@ -4308,6 +4320,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f7dba473b527f40fdac78eba4deefb34, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6935687079284805244, guid: f7dba473b527f40fdac78eba4deefb34, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -6935687079284805244, guid: f7dba473b527f40fdac78eba4deefb34, type: 3}
       propertyPath: m_IsActive
@@ -4480,6 +4496,12 @@ MonoBehaviour:
   fullControlSpin: 20
   minimumControl: 0.4
   movementSpinCost: 1
+  extraBowlPull: 4
+  maxPlanarSpeed: 14
+  overspeedBrake: 40
+  arenaLayer:
+    serializedVersion: 2
+    m_Bits: 0
   uprightSpeed: 8
   tiltResponse: 15
   noStabilitySpin: 3

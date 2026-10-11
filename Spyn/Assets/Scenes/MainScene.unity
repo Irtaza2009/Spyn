@@ -1333,7 +1333,7 @@ MonoBehaviour:
   maxShakeDuration: 0.3
   deadLinearDamping: 1.5
   toppleSpeed: 3
-  showDebug: 1
+  showDebug: 0
   player: 2
   tip: {fileID: 0}
 --- !u!54 &475223407
@@ -4304,7 +4304,7 @@ MonoBehaviour:
   maxShakeDuration: 0.3
   deadLinearDamping: 1.5
   toppleSpeed: 3
-  showDebug: 1
+  showDebug: 0
   player: 1
   tip: {fileID: 0}
 --- !u!1001 &1804794138

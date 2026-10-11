@@ -2,7 +2,7 @@
 
 Customize your Spyner and battle in an arena! Like Beyblade!
 
-A **local 2-player ** game where you battle 1v1 against your friend with your custom Spyner in an arena!
+A **local 2-player** game where you battle 1v1 against your friend with your custom Spyner in an arena!
 
 **Play here:** https://irtaza.itch.io/spyn
 

@@ -1,6 +1,6 @@
 # Spyn
 
-Customize your spyner, ad battle in an arena! Like beyblade!
+Customize your spyner, and battle in an arena! Like beyblade!
 
 A **local 2 player** game where you battle 1v1 against your friend with your custom spyner in an arena!
 
@@ -10,7 +10,7 @@ The game is built completely from scratch in Unity! All assets and 3d models hav
 
 ## Demo Video
 
-![Gameplay Demo Video](Images/Demo.mp4)
+![Gameplay Demo Video](https://github.com/user-attachments/assets/c4767410-e6ed-4f81-b3ef-67187f74dcc8)
 
 ## Demo Images
 

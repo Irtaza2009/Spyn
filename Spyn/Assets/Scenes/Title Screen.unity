@@ -324,8 +324,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: 0, y: 90}
+  m_SizeDelta: {x: 250, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &480380750
 MonoBehaviour:
@@ -374,12 +374,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 116.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 200
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -464,7 +464,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.57951474, g: 0.57951474, b: 0.57951474, a: 0}
+  m_BackGroundColor: {r: 0.519035, g: 0.6770835, b: 0.78436655, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1712,7 +1712,7 @@ PrefabInstance:
     - target: {fileID: 5437679451551056649, guid: f7dba473b527f40fdac78eba4deefb34, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7c570b9a781e1e4418a4537526ceeac7, type: 2}
+      objectReference: {fileID: 2100000, guid: 24c1ca6db4b48d244bcae104c3e783b9, type: 2}
     - target: {fileID: 5956400007168559048, guid: f7dba473b527f40fdac78eba4deefb34, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2430,17 +2430,30 @@ MonoBehaviour:
   movementDrag: 1
   spinControlThreshold: 2
   fullControlSpin: 20
+  minimumControl: 0.4
   movementSpinCost: 1
+  extraBowlPull: 4
+  maxPlanarSpeed: 14
+  overspeedBrake: 40
+  arenaLayer:
+    serializedVersion: 2
+    m_Bits: 0
   uprightSpeed: 8
   tiltResponse: 15
   noStabilitySpin: 3
   fullStabilitySpin: 25
+  minimumStability: 0.35
   applyPhysicsMaterial: 1
   slideFriction: 0.1
   bounciness: 0.4
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
+  impactParticles: {fileID: 3468349710246926554, guid: 4129a53e1eed24143b73380e5dc79f44, type: 3}
+  cameraShake: {fileID: 0}
+  shakeThreshold: 3
+  maxShakeIntensity: 0.18
+  maxShakeDuration: 0.12
   deadLinearDamping: 1.5
   toppleSpeed: 3
   showDebug: 1
@@ -3235,17 +3248,30 @@ MonoBehaviour:
   movementDrag: 1
   spinControlThreshold: 2
   fullControlSpin: 20
+  minimumControl: 0.4
   movementSpinCost: 1
+  extraBowlPull: 4
+  maxPlanarSpeed: 14
+  overspeedBrake: 40
+  arenaLayer:
+    serializedVersion: 2
+    m_Bits: 0
   uprightSpeed: 8
   tiltResponse: 15
   noStabilitySpin: 3
   fullStabilitySpin: 25
+  minimumStability: 0.35
   applyPhysicsMaterial: 1
   slideFriction: 0.1
   bounciness: 0.4
   knockbackForce: 3
   minimumImpactSpeed: 1
   maxImpactDamage: 15
+  impactParticles: {fileID: 3468349710246926554, guid: 4129a53e1eed24143b73380e5dc79f44, type: 3}
+  cameraShake: {fileID: 0}
+  shakeThreshold: 3
+  maxShakeIntensity: 0.18
+  maxShakeDuration: 0.12
   deadLinearDamping: 1.5
   toppleSpeed: 3
   showDebug: 1
@@ -3337,8 +3363,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -22.4}
-  m_SizeDelta: {x: 70, y: 30}
+  m_AnchoredPosition: {x: 0, y: -60}
+  m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2017858997
 MonoBehaviour:

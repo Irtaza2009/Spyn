@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public enum TipType
@@ -22,24 +23,24 @@ public class SpynerTip : MonoBehaviour
         switch (tipType)
         {
             case TipType.Attack:
-                movementMultiplier = 1.3f;
-                spinLossMultiplier = 1.3f;
-                impactMultiplier = 1.5f;
-                resistanceMultiplier = 1f;
+                movementMultiplier = 1.25f;
+                spinLossMultiplier = 1.30f;
+                impactMultiplier = 1.45f;
+                resistanceMultiplier = 0.90f;
                 break;
 
             case TipType.Defence:
-                movementMultiplier = 0.75f;
-                spinLossMultiplier = 1f;
-                impactMultiplier = 0.8f;
-                resistanceMultiplier = 0.65f;
+                movementMultiplier = 0.85f;
+                spinLossMultiplier = 0.90f;
+                impactMultiplier = 0.85f;
+                resistanceMultiplier = 1.40f;
                 break;
 
             case TipType.Stamina:
-                movementMultiplier = 0.9f;
+                movementMultiplier = 0.95f;
                 spinLossMultiplier = 0.65f;
-                impactMultiplier = 0.8f;
-                resistanceMultiplier = 1.1f;
+                impactMultiplier = 0.85f;
+                resistanceMultiplier = 1.05f;
                 break;
         }
     }

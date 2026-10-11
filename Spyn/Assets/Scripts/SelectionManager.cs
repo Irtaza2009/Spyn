@@ -17,6 +17,12 @@ public class SelectionManager : MonoBehaviour
     [SerializeField] private Material p1TipMaterial;
     [SerializeField] private Material p2TipMaterial;
 
+    [Header("Player Stats UI")]
+    [SerializeField] private TMP_Text p1StatsText;
+    [SerializeField] private TMP_Text p2StatsText;
+    [SerializeField] private TMP_Text p1TipTypeText;
+    [SerializeField] private TMP_Text p2TipTypeText;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject[] tops;
     [SerializeField] private GameObject[] mids;
@@ -41,6 +47,8 @@ public class SelectionManager : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
             ShowPreview(i);
+        UpdatePlayerStats(1);
+        UpdatePlayerStats(2);    
     }
 
     //P1 Thingies
@@ -75,6 +83,13 @@ public class SelectionManager : MonoBehaviour
         choices[slot] = (choices[slot] + direction + parts.Length) % parts.Length;
 
         ShowPreview(slot);
+
+        if (slot == 2)
+            UpdatePlayerStats(1);
+
+        if (slot == 5)
+            UpdatePlayerStats(2);
+
     }
 
     private void ShowPreview(int slot)
@@ -136,6 +151,62 @@ public class SelectionManager : MonoBehaviour
         int NextSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene(NextSceneIndex);
         
+    }
+
+    
+    private void UpdatePlayerStats(int playerNumber)
+    {
+        int tipSlot = playerNumber == 1 ? 2 : 5;
+
+        TMP_Text statsText = playerNumber == 1
+            ? p1StatsText
+            : p2StatsText;
+
+        TMP_Text tipTypeText = playerNumber == 1
+            ? p1TipTypeText
+            : p2TipTypeText;
+
+        if (tips == null || tips.Length == 0 ||
+            tipSlot >= choices.Length)
+            return;
+
+        GameObject selectedTip = tips[choices[tipSlot]];
+
+        if (selectedTip == null)
+            return;
+
+        SpynerTip tipStats =
+            selectedTip.GetComponentInChildren<SpynerTip>(true);
+
+        if (tipStats == null)
+        {
+            if (statsText != null)
+                statsText.text = "No tip stats configured";
+
+            if (tipTypeText != null)
+                tipTypeText.text = "";
+
+            return;
+        }
+
+        // Update the selected tip type.
+        if (tipTypeText != null)
+            tipTypeText.text = $"({tipStats.tipType.ToString().ToUpper()})";
+
+        // Relative spin retention: higher means spin lasts longer.
+        float spinRetention = tipStats.spinLossMultiplier > 0f
+            ? 1f / tipStats.spinLossMultiplier
+            : 999f;
+
+        // Update the stats.
+        if (statsText != null)
+        {
+            statsText.text =
+                $"STAMINA         {spinRetention * 100f:0}%   " +
+                $"MOVEMENT SPEED  {tipStats.movementMultiplier * 100f:0}%\n" +
+                $"ATTACK POWER    {tipStats.impactMultiplier * 100f:0}%   " +
+                $"DEFENCE         {tipStats.resistanceMultiplier * 100f:0}%";
+        }
     }
 
 }

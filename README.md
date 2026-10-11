@@ -1,8 +1,8 @@
 # Spyn
 
-Customize your spyner, and battle in an arena! Like beyblade!
+Customize your Spyner and battle in an arena! Like Beyblade!
 
-A **local 2 player** game where you battle 1v1 against your friend with your custom spyner in an arena!
+A **local 2-player ** game where you battle 1v1 against your friend with your custom Spyner in an arena!
 
 **Play here:** https://irtaza.itch.io/spyn
 
@@ -10,7 +10,7 @@ The game is built completely from scratch in Unity! All assets and 3d models hav
 
 ## Demo Video
 
-![Gameplay Demo Video](https://github.com/user-attachments/assets/c4767410-e6ed-4f81-b3ef-67187f74dcc8)
+![Demo](https://cdn.hackclub.com/01a12b20-e9f0-7501-88e3-7759fc2f04c1/Demo-ezgif.com-video-to-gif-converter.gif)
 
 ## Demo Images
 

@@ -308,6 +308,9 @@ public class SpynerController : MonoBehaviour
         if (opponent == null || opponent == this || isDead)
             return;
 
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayClash();
+
         float impactSpeed = collision.relativeVelocity.magnitude;
 
         if (impactSpeed < minimumImpactSpeed)

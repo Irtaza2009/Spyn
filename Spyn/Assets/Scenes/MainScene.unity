@@ -256,6 +256,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 30370329}
   m_CullTransparentMesh: 1
+--- !u!1 &41444123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 41444125}
+  - component: {fileID: 41444124}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &41444124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41444123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bdb14386da14b44cb78fd6f56030209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  clashSfx: {fileID: 8300000, guid: 224f44900b661df4db2d0d879346d309, type: 3}
+  sfxVolume: 0.6
+--- !u!4 &41444125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41444123}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &58697643 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3315490793664190301, guid: 248ac85b919ee4a9fbebba7416bac72d, type: 3}
@@ -778,7 +824,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.7318058, g: 0.9691802, b: 1, a: 0}
+  m_BackGroundColor: {r: 0.3166389, g: 0.44518194, b: 0.5256064, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1570,8 +1616,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283914071
-  m_fontColor: {r: 0.342318, g: 0.342318, b: 0.342318, a: 1}
+    rgba: 4289967027
+  m_fontColor: {r: 0.703504, g: 0.703504, b: 0.703504, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2815,7 +2861,7 @@ Transform:
   m_GameObject: {fileID: 1020548394}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.2, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 100, y: 0.2, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3740,8 +3786,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284611327
-  m_fontColor: {r: 1, g: 0.9806556, b: 0.38140148, a: 1}
+    rgba: 4278253823
+  m_fontColor: {r: 1, g: 0.9715551, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4591,8 +4637,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284611327
-  m_fontColor: {r: 1, g: 0.9806556, b: 0.38140148, a: 1}
+    rgba: 4278253823
+  m_fontColor: {r: 1, g: 0.9715551, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4728,8 +4774,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283914071
-  m_fontColor: {r: 0.342318, g: 0.342318, b: 0.342318, a: 1}
+    rgba: 4289967027
+  m_fontColor: {r: 0.703504, g: 0.703504, b: 0.703504, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5843,3 +5889,4 @@ SceneRoots:
   - {fileID: 766148285}
   - {fileID: 856336106}
   - {fileID: 1595916341}
+  - {fileID: 41444125}
